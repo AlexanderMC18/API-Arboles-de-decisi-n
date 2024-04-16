@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de datos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000000; /* Cambia el color de fondo del cuerpo */
+        }
+
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Cambia el color de fondo y los bordes de las tablas */
+        table {
+            background-color: #ffffff;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+
+        th {
+            background-color: #f8f9fa; /* Cambia el color de fondo de las celdas de encabezado */
+            border: 1px solid #dee2e6;
+        }
+
+        td {
+            border: 1px solid #dee2e6;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        .info {
+            margin-top: 30px;
+        }
+
+        /* Estilo para el div de la imagen */
+        .image-container {
+            margin-top: 30px; /* Espacio entre el div anterior y la imagen */
+            text-align: center; /* Centra la imagen horizontalmente */
+            overflow: hidden; /* Oculta el contenido que se desborda */
+            border-radius: 10px; /* Añade bordes redondeados al contenedor de la imagen */
+        }
+
+        .image-container img {
+            max-width: 100%; /* Asegura que la imagen no se salga del contenedor */
+            height: auto; /* Mantiene la proporción de aspecto de la imagen */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Título con header -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h1 class="text-center mb-4">Lectura del Dataset</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor de la tabla con scroll horizontal -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body table-container">
+                        <!-- Imprimir la tabla de los primeros 10 registros -->
+                        {{ head_table_html | safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Imprimir la información del DataFrame -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Información del Dataframe:</h2>
+                        {{ info_text | safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir df['calss'].value_counts() -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Conteo de Clases:</h2>
+                        <p>{{ class_counts_text | safe }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir la matriz de correlación con scroll horizontal -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body table-container">
+                        <h2>Matriz de Correlación:</h2>
+                        {{ correlation_result | safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir el fragmento de la matriz de correlación filtrada -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body table-container">
+                        <h2>Matriz de Correlación (Valores mayores a 0.05):</h2>
+                        {{ filtered_corr_matrix | safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir los primeros 10 registros escalados -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body table-container">
+                        <h2>Primeros 10 Registros Escalados:</h2>
+                        {{ scaled_table_html | safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir la descripción del conjunto de datos escalado -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body table-container">
+                        <h2>Descripción del Conjunto de Datos Escalado:</h2>
+                        {{ X_train_scaled_desc | safe }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir el modelo de árbol de decisión entrenado -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Modelo de Árbol de Decisión Entrenado (Sin Escalar):</h2>
+                        <p>{{ clf_tree | safe }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir el modelo de árbol de decisión entrenado con datos escalados -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Modelo de Árbol de Decisión Entrenado (Escalado):</h2>
+                        <p>{{ clf_tree_scaled | safe }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir los resultados de la evaluación en el conjunto de entrenamiento -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Resultados de la Evaluación en Conjunto de Entrenamiento:</h2>
+                        <p>{{ f1_score_train_result | safe }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir los resultados de la evaluación en el conjunto de validación -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Resultados de la Evaluación en Conjunto de Validación:</h2>
+                        <p>{{ f1_score_val_result | safe }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir el modelo de árbol de decisión entrenado con datos reducidos -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Modelo de Árbol de Decisión Entrenado con Datos Reducidos:</h2>
+                        <p>{{ clf_tree_reduced | safe }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir el árbol de decisión generado -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Árbol de Decisión Generado:</h2>
+                        <div>{{ tree_content | safe }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir el límite de decisión -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Límite de Decisión:</h2>
+                        <img src="data:image/png;base64,{{ decision_plot }}" alt="Decision Boundary">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nuevo div para imprimir la imagen del árbol de decisión -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body image-container">
+                        <h2>Árbol de Decisión:</h2>
+                        <img src="/static/android_malware.png" alt="Árbol de Decisión" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Contenido del árbol de decisión:</h2>
+                        <pre>{{ tree_content | safe }}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Modelo de bosques aleatorios con escalar:</h2>
+                        <pre>{{ clf_forest | safe }}</pre> <!-- Aquí debe ser clf_forest_scaled -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card info">
+                    <div class="card-body">
+                        <h2>Modelo de bosques aleatorios sin escalar:</h2>
+                        <pre>{{ clf_forest_scaled | safe }}</pre> <!-- Aquí debe ser clf_forest_scaled -->
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+    <!-- Nuevo div para imprimir la comparación de resultados entre escalado y sin escalado con bosques aleatorios en el conjunto de datos de entrenamiento -->
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card info">
+                <div class="card-body">
+                    <h2>Comparación de resultados entre escalado y sin escalado con bosques aleatorios en el conjunto de datos de entrenamiento:</h2>
+                    <p>{{ f1_score_train_result_forest | safe }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
